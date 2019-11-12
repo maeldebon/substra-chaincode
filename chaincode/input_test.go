@@ -160,6 +160,34 @@ func (algo *inputCompositeAlgo) createDefault() [][]byte {
 	return args
 }
 
+func (algo *inputAggregateAlgo) createDefault() [][]byte {
+	algo.fillDefaults()
+	return algo.getArgs()
+}
+
+func (algo *inputAggregateAlgo) fillDefaults() {
+	if algo.Name == "" {
+		algo.Name = aggregateAlgoName
+	}
+	if algo.Hash == "" {
+		algo.Hash = aggregateAlgoHash
+	}
+	if algo.StorageAddress == "" {
+		algo.StorageAddress = aggregateAlgoStorageAddress
+	}
+	if algo.DescriptionHash == "" {
+		algo.DescriptionHash = "e2dbb7c31f62244c0f3a761cc168804227115793d01c270021fe3f7935482dcb"
+	}
+	if algo.DescriptionStorageAddress == "" {
+		algo.DescriptionStorageAddress = "https://toto/aggregateAlgo/222/description"
+	}
+	algo.Permissions = OpenPermissions
+}
+
+func (algo *inputAggregateAlgo) getArgs() [][]byte {
+	return append([][]byte{[]byte("registerAggregateAlgo")}, assetToJSON(algo))
+}
+
 func (traintuple *inputTraintuple) createDefault() [][]byte {
 	if traintuple.AlgoKey == "" {
 		traintuple.AlgoKey = algoHash
@@ -206,7 +234,34 @@ func (traintuple *inputCompositeTraintuple) getArgs() [][]byte {
 	return args
 }
 
+func (traintuple *inputAggregateTraintuple) createDefault() [][]byte {
+	traintuple.fillDefaults()
+	return traintuple.getArgs()
+}
+
+func (traintuple *inputAggregateTraintuple) fillDefaults() {
+	if traintuple.AlgoKey == "" {
+		traintuple.AlgoKey = aggregateAlgoHash
+	}
+	if traintuple.ObjectiveKey == "" {
+		traintuple.ObjectiveKey = objectiveDescriptionHash
+	}
+	if traintuple.Worker == "" {
+		traintuple.Worker = worker
+	}
+}
+
+func (traintuple *inputAggregateTraintuple) getArgs() [][]byte {
+	args := append([][]byte{[]byte("createAggregateTraintuple")}, assetToJSON(traintuple))
+	return args
+}
+
 func (success *inputLogSuccessTrain) createDefault() [][]byte {
+	success.fillDefaults()
+	return success.getArgs()
+}
+
+func (success *inputLogSuccessTrain) fillDefaults() {
 	if success.Key == "" {
 		success.Key = traintupleKey
 	}
@@ -222,9 +277,10 @@ func (success *inputLogSuccessTrain) createDefault() [][]byte {
 	if success.OutModel.StorageAddress == "" {
 		success.OutModel.StorageAddress = modelAddress
 	}
+}
 
-	args := append([][]byte{[]byte("logSuccessTrain")}, assetToJSON(success))
-	return args
+func (success *inputLogSuccessTrain) getArgs() [][]byte {
+	return append([][]byte{[]byte("logSuccessTrain")}, assetToJSON(success))
 }
 
 func (success *inputLogSuccessCompositeTrain) createDefault() [][]byte {

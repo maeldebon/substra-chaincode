@@ -35,6 +35,8 @@ func queryFilter(db LedgerDB, args []string) (elements interface{}, err error) {
 		"traintuple~tag",
 		"compositeTraintuple~worker~status",
 		"compositeTraintuple~tag",
+		"aggregateTraintuple~worker~status",
+		"aggregateTraintuple~tag",
 	}
 	if !stringInSlice(inp.IndexName, validIndexNames) {
 		err = fmt.Errorf("invalid indexName filter query: %s", inp.IndexName)
@@ -56,6 +58,8 @@ func queryFilter(db LedgerDB, args []string) (elements interface{}, err error) {
 		elements, err = getOutputTraintuples(db, filteredKeys)
 	case "compositeTraintuple~worker~status~key", "compositeTraintuple~tag~key":
 		elements, err = getOutputCompositeTraintuples(db, filteredKeys)
+	case "aggregateTraintuple~worker~status~key", "aggregateTraintuple~tag~key":
+		elements, err = getOutputAggregateTraintuples(db, filteredKeys)
 	}
 	return
 }

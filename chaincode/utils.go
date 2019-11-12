@@ -130,12 +130,18 @@ func (assetType AssetType) String() string {
 		return "dataSample"
 	case AlgoType:
 		return "algo"
+	case CompositeAlgoType:
+		return "compositeAlgo"
+	case AggregateAlgoType:
+		return "aggregateAlgo"
 	case TraintupleType:
 		return "traintuple"
-	case TesttupleType:
-		return "testtuple"
 	case CompositeTraintupleType:
 		return "compositeTraintuple"
+	case AggregateTraintupleType:
+		return "aggregateTraintuple"
+	case TesttupleType:
+		return "testtuple"
 	default:
 		return fmt.Sprintf("(unknown asset type: %d)", assetType)
 	}

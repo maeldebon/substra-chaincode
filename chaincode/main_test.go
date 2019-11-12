@@ -46,6 +46,9 @@ const algoName = "hog + svm"
 const compositeAlgoHash = "fd1bb7c31f62244c0f3a761cc168804227115793d01c270021fe3f7935482dcd"
 const compositeAlgoStorageAddress = "https://toto/compositeAlgo/222/algo"
 const compositeAlgoName = "hog + svm composite"
+const aggregateAlgoHash = "dddbb7c31f62244c0f3a761cc168804227115793d01c270021fe3f7935482ddd"
+const aggregateAlgoStorageAddress = "https://toto/aggregateAlgo/222/algo"
+const aggregateAlgoName = "hog + svm aggregate"
 const modelHash = "eedbb7c31f62244c0f3a761cc168804227115793d01c270021fe3f7935482eed"
 const modelAddress = "https://substrabac/model/toto"
 const headModelHash = modelHash
@@ -55,6 +58,7 @@ const trunkModelAddress = "https://substrabac/model/titi"
 const worker = "SampleOrg"
 const traintupleKey = "9da043ddc233996d2e62c196471290de4726fc59d65dbbd2b32a920326e8adf3"
 const compositeTraintupleKey = "57104c72d50215d8cfa288059fdf47bcc5f808f6685a5f08fa08f792cd782c68"
+const aggregateTraintupleKey = "af689258ffecdb5172b285b04475ac44941b7e6acd88a0d076059ce520cb0a95"
 
 var (
 	pipeline = flag.Bool("pipeline", false, "Print out the pipeline test output")
@@ -203,11 +207,19 @@ func registerItem(t *testing.T, mockStub MockStub, itemType string) (peer.Respon
 	inpCompositeAlgo := inputCompositeAlgo{}
 	args = inpCompositeAlgo.createDefault()
 	resp = mockStub.MockInvoke("42", args)
-	require.EqualValuesf(t, 200, resp.Status, "when adding algo with status %d and message %s", resp.Status, resp.Message)
+	require.EqualValuesf(t, 200, resp.Status, "when adding composite algo with status %d and message %s", resp.Status, resp.Message)
 	if itemType == "compositeAlgo" {
 		return resp, inpCompositeAlgo
 	}
-	// 7. Add traintuple
+	// 7. Add aggregate algo
+	inpAggregateAlgo := inputAggregateAlgo{}
+	args = inpAggregateAlgo.createDefault()
+	resp = mockStub.MockInvoke("42", args)
+	require.EqualValuesf(t, 200, resp.Status, "when adding aggregate algo with status %d and message %s", resp.Status, resp.Message)
+	if itemType == "aggregateAlgo" {
+		return resp, inpAggregateAlgo
+	}
+	// 8. Add traintuple
 	inpTraintuple := inputTraintuple{}
 	args = inpTraintuple.createDefault()
 	resp = mockStub.MockInvoke("42", args)
@@ -215,7 +227,7 @@ func registerItem(t *testing.T, mockStub MockStub, itemType string) (peer.Respon
 	if itemType == "traintuple" {
 		return resp, inpTraintuple
 	}
-	// 8. Add composite traintuple
+	// 9. Add composite traintuple
 	inpCompositeTraintuple := inputCompositeTraintuple{}
 	args = inpCompositeTraintuple.createDefault()
 	resp = mockStub.MockInvoke("42", args)
@@ -223,8 +235,16 @@ func registerItem(t *testing.T, mockStub MockStub, itemType string) (peer.Respon
 	if itemType == "compositeTraintuple" {
 		return resp, inpCompositeTraintuple
 	}
+	// 10. Add aggregate traintuple
+	inpAggregateTraintuple := inputAggregateTraintuple{}
+	args = inpAggregateTraintuple.createDefault()
+	resp = mockStub.MockInvoke("42", args)
+	require.EqualValuesf(t, 200, resp.Status, "when adding aggregate traintuple with status %d and message %s", resp.Status, resp.Message)
+	if itemType == "aggregateTraintuple" {
+		return resp, inpAggregateTraintuple
+	}
 
-	return resp, inpCompositeTraintuple
+	return resp, inpAggregateTraintuple
 }
 
 func registerTraintuple(mockStub *MockStub, assetType AssetType, dataSampleKeys []string) (key string, err error) {
