@@ -38,6 +38,7 @@ func (tuple *Aggregatetuple) SetFromInput(db *LedgerDB, inp inputAggregatetuple)
 	tuple.AssetType = AggregatetupleType
 	tuple.Creator = creator
 	tuple.Tag = inp.Tag
+	tuple.Metadata = inp.Metadata
 	algo, err := db.GetAggregateAlgo(inp.AlgoKey)
 	if err != nil {
 		return errors.BadRequest(err, "could not retrieve algo with key %s", inp.AlgoKey)
