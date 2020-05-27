@@ -37,7 +37,7 @@ func (tuple *Aggregatetuple) SetFromInput(db *LedgerDB, inp inputAggregatetuple)
 	}
 	tuple.AssetType = AggregatetupleType
 	tuple.Creator = creator
-	tuple.Metadata = inp.Metadata
+	tuple.Metadata = initMapOutput(inp.Metadata)
 	tuple.Tag = inp.Tag
 	algo, err := db.GetAggregateAlgo(inp.AlgoKey)
 	if err != nil {

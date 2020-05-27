@@ -41,7 +41,7 @@ func (traintuple *Traintuple) SetFromInput(db *LedgerDB, inp inputTraintuple) er
 	}
 	traintuple.AssetType = TraintupleType
 	traintuple.Creator = creator
-	traintuple.Metadata = inp.Metadata
+	traintuple.Metadata = initMapOutput(inp.Metadata)
 	traintuple.Tag = inp.Tag
 	algo, err := db.GetAlgo(inp.AlgoKey)
 	if err != nil {
